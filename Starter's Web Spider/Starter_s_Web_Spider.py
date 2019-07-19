@@ -3,6 +3,7 @@
 import urllib.request
 from lxml import etree
 import redis
+import websocket
 
 # 论坛版块总字典
 dict_forum = {}
@@ -63,18 +64,16 @@ def getNeoTV():
                 else:
                     dict_forum[t[0].text] = baseUrl + href
 
-# sqlite 数据库操作
-def databaseWorker():
+# 数据写入 Redis
+def writeRedis():
     r = redis.Redis(host='localhost', port=6379, decode_responses=True)
-    r.set('dict', dict_forum)
-    #print(r['name'])
-    print(r.get('dict'))  # 取出键name对应的值
-    #print(type(r.get('name')))
+    for data in dict_forum:
+        r.set(data, dict_forum[data])
 
 # 第一步，获取scboy论坛信息
 getScboy()
 # 第二步，获取NeoTV论坛信息
 getNeoTV()
 
-print(dict_forum)
-databaseWorker()
+#print(dict_forum)
+writeRedis()
