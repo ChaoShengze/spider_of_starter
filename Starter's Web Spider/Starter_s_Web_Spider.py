@@ -23,7 +23,7 @@ def getScboy():
         # 使用xpath来筛选信息
         html = etree.HTML(txt, etree.HTMLParser())
         selector = html.xpath("/html/body/main/div/div/div[1]/div/div[2]/ul/li/div/div[1]/a[1]")
-        print(len(selector))
+        print("scboy get:" + len(selector))
 
         # 遍历以整理相关信息
         for t in selector:
@@ -42,7 +42,7 @@ def get163():
 def getNeoTV():
     # url相关
     baseUrl = "http://bbs.niuyou5.com/"
-    url = "http://bbs.niuyou5.com/forum-161-1.html"
+    url = baseUrl + "forum-161-1.html"
     
     # 获取网页内容
     response = urllib.request.urlopen(url)
@@ -53,7 +53,7 @@ def getNeoTV():
         # 使用xpath来筛选信息
         html = etree.HTML(txt, etree.HTMLParser())
         selector = html.xpath("/html/body/div[5]/div/div[3]/div[3]/div[4]/form/table/tbody/tr/th/a")
-        print(len(selector))
+        print("neotv get:" + len(selector))
 
         # 遍历以整理相关信息
         for t in selector:
@@ -76,4 +76,6 @@ getScboy()
 getNeoTV()
 
 #print(dict_forum)
+
+# 第三步，将之前获得的数据存入Redis
 writeRedis()
